@@ -10,7 +10,7 @@ class SendEmail:
                  send_to=None):
         self.username = username
         self.password = password
-        self.send_to = send_to or ['spaun1002@gmail.com']
+        self.send_to = send_to or [config.MAIL_GMAIL]
         self.send_email()
 
     def send_email(self, subject='Test Error', text='Test Error', exception=None):
