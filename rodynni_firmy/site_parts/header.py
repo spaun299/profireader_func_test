@@ -20,5 +20,5 @@ class Header(GeneralPart):
         hrefs = self.driver.find_elements_by_xpath(xpath)
         if random:
             rand.choice(hrefs).click()
-            assert 'Not Found' not in self.driver.page_source, \
+            assert 'Not Found' in self.driver.page_source, \
                 'Page {page} Not Found'.format(page=self.driver.current_url)

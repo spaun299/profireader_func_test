@@ -6,7 +6,7 @@ from ..email import SendEmail
 
 
 class General(object):
-    
+
     driver = Firefox()
     dependences = ('header', 'footer')
 
