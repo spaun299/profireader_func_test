@@ -1,8 +1,9 @@
-from ..site_parts.header import Header
 from ..site_parts.footer import Footer
 from selenium.webdriver.common.keys import Keys
+from .general import General
 
 
-class IndexPage(object):
-    def __init__(self, driver):
-        self.driver = driver
+class IndexPage(General):
+    def __init__(self, device='PHONE'):
+        self.device = device
+        super().__init__(device=self.device)
