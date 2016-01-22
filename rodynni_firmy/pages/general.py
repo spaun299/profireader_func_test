@@ -10,7 +10,8 @@ class General(object):
     driver = Firefox()
     dependences = ('header', 'footer')
 
-    def __init__(self, dependences=dependences, driver=driver, device='PC', testing_page=RODYNNIFIRMY_URL):
+    def __init__(self, dependences=dependences, driver=driver, device='PC', testing_page=RODYNNIFIRMY_URL,
+                 close=False):
         self.device = device
         self.driver = driver
         self.testing_page = testing_page

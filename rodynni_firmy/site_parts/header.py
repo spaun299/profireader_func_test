@@ -1,24 +1,53 @@
 from selenium.webdriver.common.keys import Keys
 import random as rand
 from .general_part import GeneralPart
+import config
+import time
 
 
 class Header(GeneralPart):
-    def __init__(self, driver=None):
+    def __init__(self, driver=None, testing_page=config.RODYNNIFIRMY_URL):
         super().__init__(driver=driver)
         self.driver = driver
+        self.testing_page = testing_page
 
     def __call__(self, *args, **kwargs):
-        self.test_top_navbar(random=True)
+        self.test_top_navbar(random=False)
 
     @classmethod
     def __repr__(cls):
         return 'header'
 
     def test_top_navbar(self, random=False):
-        xpath = self.division_xpath
-        hrefs = self.driver.find_elements_by_xpath(xpath)
+        hrefs = self.driver.find_elements_by_xpath(self.division_xpath)
         if random:
-            rand.choice(hrefs).click()
-            assert 'Not Found' in self.driver.page_source, \
+            href = rand.choice(hrefs)
+            assert type(href) is str, "Can't find href for division"
+            href.click()
+            assert 'Not Found' not in self.driver.page_source, \
                 'Page {page} Not Found'.format(page=self.driver.current_url)
+            assert self.driver.current_url != self.testing_page, "Can't move to {url}".format(url=href)
+        else:
+            a_length = 1
+            count = 0
+            while count < a_length:
+                hrefs = self.driver.find_elements_by_xpath(self.division_xpath)[count:]
+                a_length = len(hrefs) if count == 0 else a_length
+                count += 1
+                hrefs[0].click()
+                time.sleep(2)
+                if '_c' not in self.driver.current_url and \
+                        self.driver.find_elements_by_xpath(
+                            "//div[@class='col-md-9']/div[@class='block-item list-elements']"):
+                    assert self.get_number_of_current_page() == 1, 'Page number is not 1(first), ' \
+                                                                   'when switch to {division}'.format(
+                        division=self.get_current_division_name())
+                if '_c' not in self.driver.current_url and not \
+                        self.driver.find_elements_by_xpath(
+                            "//div[@class='col-md-9']/div[@class='block-item list-elements']"):
+                    assert not self.driver.find_elements_by_class_name('pager'), \
+                        'Show pages, but there are no articles on page {page}'.format(page=self.driver.current_url)
+
+                self.driver.get(self.testing_page)
+                assert self.driver.current_url == self.testing_page or self.driver.current_url == self.testing_page+'/'
+                time.sleep(1)

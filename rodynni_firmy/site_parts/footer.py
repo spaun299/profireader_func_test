@@ -8,7 +8,7 @@ class Footer(GeneralPart):
         self.driver = driver
 
     def __call__(self, *args, **kwargs):
-        print(self.division_xpath + '      footer')
+        print('footer')
 
     @classmethod
     def __repr__(cls):

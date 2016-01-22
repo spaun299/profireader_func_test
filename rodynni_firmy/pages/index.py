@@ -11,3 +11,4 @@ class IndexPage(General):
         self.device = device
         self.set_config()
         super().__init__(device=self.device, testing_page=self.testing_page)
+        self.driver.close()
